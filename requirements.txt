@@ -10,3 +10,4 @@ python-dotenv
 extra-streamlit-components
 google-api-python-client
 google-auth-oauthlib
+setuptools==65.5.0
