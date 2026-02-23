@@ -90,27 +90,35 @@ def add_total_border(xl, row, col_start, col_end):
     return xl
 
 
-def add_total_cell(xl, row, col_start, col_end):
+def add_merged_cell(xl, row, col_start, col_end, text, bold=False):
     merge_cells(xl, row, row, col_start, col_end)
     total_cell = xl.cell(row=row, column=1)
 
-    set_cell(total_cell, "Total Cost", bold=True, alignment="left")
+    set_cell(total_cell, text, bold=bold, alignment="left")
     return xl
 
 
-def add_total_row(xl, row_max, col_max):
+def add_total_rows(xl, row_max, col_max):
 
     cell = xl.cell(row=row_max, column=col_max)
     col_ref = f"{chr(64 + col_max)}"
-    set_cell(cell, f'=SUM(${col_ref}$2:INDIRECT("{col_ref}" & ROW()-1))', bold=True)
+    total_row = row_max
+    set_cell(cell, f'=SUM(${col_ref}$2:INDIRECT("{col_ref}" & ROW()-1))')
+    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total")
 
-    xl = add_total_cell(xl, row_max, 1, col_max - 1)
+    row_max += 1
+    gst_cell = xl.cell(row=row_max, column=col_max)
+    set_cell(gst_cell, "+ 18% GST", alignment="right")
+    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "")
+    gst_cell.parent.row_dimensions[gst_cell.row].height = 30
+
+    row_max += 1
+    gst_total = xl.cell(row_max, column=col_max)
+    set_cell(gst_total, f'=1.18*{col_ref}{total_row}', bold=True)
+    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total Project Value", bold=True)
     xl = add_total_border(xl, row_max, 1, col_max)
 
-    gst_cell = xl.cell(row=row_max+1, column=col_max)
-    set_cell(gst_cell, "+ 18% GST", alignment="right")
-
-    return xl
+    return xl, row_max
 
 
 def get_total_cols(xl, curr_row, start_col, end_col):
@@ -191,10 +199,9 @@ def generate_commercial_table(data):
 
         curr_row += 1
 
-    commercial_xl = add_total_row(commercial_xl, curr_row, 5)
-    curr_row += 2  # gst row is also added after total
+    commercial_xl, curr_row = add_total_rows(commercial_xl, curr_row, 5)
 
-    commercial_xl.delete_rows(curr_row, commercial_xl.max_row)
+    commercial_xl.delete_rows(curr_row+1, commercial_xl.max_row)
 
     output = BytesIO()
     commercial_wb.save(output)
@@ -243,9 +250,9 @@ def combine_commercial_xls(wb, dfs):
 
         start = curr_row + 1
 
-    xl = add_total_row(xl, start, 7)
+    xl, start = add_total_rows(xl, start, 7)
 
-    xl.delete_rows(start + 2, xl.max_row)
+    xl.delete_rows(start+1, xl.max_row)
 
     return wb
 

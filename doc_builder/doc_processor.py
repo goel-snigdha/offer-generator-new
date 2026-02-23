@@ -27,9 +27,16 @@ def create_product_section(area_data):
             section_doc.merge(
                 Fixing=area_data['installation_method'],
             )
+
     if area_data['product'] in ['S-Louvers', 'Fluted']:
         section_doc.merge(
             Coverage=area_data['finish_sides']
+        )
+
+    if area_data['product'] in ['Cottal']:
+        section_doc.merge(
+            # Pitch=str(area_data["pitch"]) + " mm",
+            SectionType=area_data["section_type"]
         )
 
     section_doc_obj = convert_to_doc(section_doc)

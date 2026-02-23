@@ -8,7 +8,12 @@ INSTALLATION_RATE = 200
 
 def get_data(xl):
 
-    return {}
+    vars = {}
+
+    section_type = xl.cell(row=1, column=3).value
+    vars["section_type"] = section_type.replace("Cottal ", "")
+
+    return vars
 
 
 def update_data(xl, curr_row):
@@ -50,7 +55,8 @@ def convert(window_wb, finish, installation):
     vars = update_data(window_xl, max_row)
 
     path = "files/reference_xls/price_xls"
-    price_wb = openpyxl.load_workbook(f"{path}/cottal.xlsx", data_only=True)
+    ext = vars["section_type"].replace(" mm", "")
+    price_wb = openpyxl.load_workbook(f"{path}/cottal_{ext}.xlsx", data_only=True)
     price_xl = price_wb.worksheets[0]
 
     rate = price_xl.cell(row=3, column=FINISH_RATE_COLS[finish]).value
