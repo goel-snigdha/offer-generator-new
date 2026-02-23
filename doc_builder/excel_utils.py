@@ -94,7 +94,7 @@ def add_merged_cell(xl, row, col_start, col_end, text, bold=False):
     merge_cells(xl, row, row, col_start, col_end)
     total_cell = xl.cell(row=row, column=1)
 
-    set_cell(total_cell, text, bold=bold, alignment="left")
+    set_cell(total_cell, text, bold=bold, alignment="center")
     return xl
 
 
