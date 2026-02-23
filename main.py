@@ -15,26 +15,26 @@ def get_user_input():
     st.subheader("Project Details")
 
     pattern = r"^VT-\d{4}/[A-G]\d{3}(_R\d{1,2})?$"
-    offer_num = st.text_input("Offer Number", value="VT-2526/B014")
+    offer_num = st.text_input("Offer Number")
     if not re.match(pattern, offer_num):
         st.error("Offer Number format should match that in Salesforce.")
     offer_data["OfferNumber"] = offer_num
     offer_data["ProjectName"] = st.text_input(
-        "Project Name", placeholder="Residential/Commercial/Hotel/...", value="Hotel Ritz Carlton"
+        "Project Name", placeholder="Residential/Commercial/Hotel/..."
     )
     offer_data["ProjectCity"] = st.text_input(
-        "Project City", placeholder="Project City", value="Navi Mumbai"
+        "Project City", placeholder="Project City"
     )
     offer_data["installation"] = st.checkbox("Installation Included", value=True)
 
     st.subheader("")
     st.subheader("Recipient Information")
 
-    offer_data["CompanyName"] = st.text_input("Company Name", placeholder="Company Name", value="ABC Hospitality Ltd")
-    offer_data["FullName"] = st.text_input("Addressee Full Name", placeholder="Full Name", value="Sanjay Goel")
-    offer_data["Mobile"] = st.text_input("Mobile", value="+918875621020")
+    offer_data["CompanyName"] = st.text_input("Company Name", placeholder="Company Name")
+    offer_data["FullName"] = st.text_input("Addressee Full Name", placeholder="Full Name")
+    offer_data["Mobile"] = st.text_input("Mobile")
     offer_data["CompanyCity"] = st.text_input(
-        "Company City", placeholder="Company City", value="New Delhi"
+        "Company City", placeholder="Company City"
     )
 
     all_data["offer_data"] = offer_data
