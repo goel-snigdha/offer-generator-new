@@ -1,7 +1,8 @@
 import math
+from pathlib import Path
 from collections import defaultdict
 import openpyxl
-from doc_builder.excel_utils import get_max_row
+from excel_utils import get_max_row
 
 WIDTH_BAND_ROWS = [
     (0, 300),
@@ -26,8 +27,10 @@ def get_data(xl):
 
 def calc_price(xl, max_row):
 
-    path = "files/reference_xls/price_xls"
-    price_wb = openpyxl.load_workbook(f"{path}/beamc.xlsx", data_only=True)
+    BASE_DIR = Path(__file__).resolve().parents[2]
+    path = BASE_DIR/"files"/"reference_xls"/"price_xls"/"beamc.xlsx"
+
+    price_wb = openpyxl.load_workbook(path, data_only=True)
     price_xl = price_wb.worksheets[0]
     vars = []
     unique_widths = defaultdict(float)
@@ -78,7 +81,7 @@ def generate_df(data):
     return df
 
 
-def convert(window_wb, finish, installation):
+def convert(window_wb, data, installation):
 
     window_xl = window_wb.worksheets[0]
     max_row = get_max_row(window_xl)

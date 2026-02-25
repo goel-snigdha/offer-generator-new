@@ -1,11 +1,12 @@
 import openpyxl
-from doc_builder.excel_utils import (
+from pathlib import Path
+from louvers.doc_builder.excel_utils import FINISH_RATE_COLS
+from excel_utils import (
     get_total_cols,
     get_max_row,
     set_cell_and_save,
     get_cell_ref,
     evaluate_formula,
-    FINISH_RATE_COLS,
 )
 
 END_CAP_RATE = 50
@@ -65,14 +66,17 @@ def generate_df(window_data, finish, installation, grille_rate):
     return data
 
 
-def convert(window_wb, finish, installation):
+def convert(window_wb, data, installation):
+
+    finish = data['finish']
 
     window_xl = window_wb.worksheets[0]
     max_row = get_max_row(window_xl)
 
     vars = update_data(window_xl, max_row)
-    path = "files/reference_xls/price_xls"
-    price_wb = openpyxl.load_workbook(f"{path}/grille.xlsx", data_only=False)
+    BASE_DIR = Path(__file__).resolve().parents[2]
+    path = BASE_DIR/"files"/"reference_xls"/"price_xls"/"grille.xlsx"
+    price_wb = openpyxl.load_workbook(path, data_only=False)
 
     wb_with_pitch = set_cell_and_save(price_wb, vars["pitch"], 8, 2)
 

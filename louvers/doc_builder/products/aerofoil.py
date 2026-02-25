@@ -1,12 +1,12 @@
-import math
 import openpyxl
-from doc_builder.excel_utils import (
+from pathlib import Path
+from louvers.doc_builder.excel_utils import FINISH_RATE_COLS
+from excel_utils import (
     get_total_cols,
     get_max_row,
     set_cell_and_save,
     get_cell_ref,
     evaluate_formula,
-    FINISH_RATE_COLS,
 )
 
 INSTALLATION_RATE = {
@@ -22,7 +22,7 @@ MECHANISM_ACCESSORIES = {
     "Fringe End Caps": ("Supply of End Caps", "Fringe End Caps (pcs)", "pcs", 250),
     "D-Wall Bracket": ("Supply of End Caps", "Total End Caps (pcs)", "pcs", 250),
     "Slot Cut Pipe": ("Slot Cut Pipe Length", "Total MS Rod Length (m)", "m", 0),
-    "Moveable Manual": ("Manually Moveable Mechanism", "Area (ft2)", "ft\u00b2", 500),
+    "Manually Moveable": ("Manually Moveable Mechanism", "Area (ft2)", "ft\u00b2", 500),
     "Moveable Motorized": ("Motorization", "No. of Motors (pcs)", "pcs", 4200),
 }
 
@@ -56,8 +56,6 @@ def update_data(xl, curr_row):
 
 def generate_df(window_data, finish, installation, af_rate):
 
-    total_cost = 0
-    offer_rate_transit = math.ceil((af_rate * 1.01) / 10) * 10
     offer_rate_formula = f"=CEILING({af_rate}*1.01, 10)"
 
     area = round(window_data["Area (ft2)"], 0)
@@ -71,7 +69,6 @@ def generate_df(window_data, finish, installation, af_rate):
             offer_rate_formula,
         ]
     ]
-    total_cost += area * offer_rate_transit
 
     if window_data["installation_method"] in MECHANISM_ACCESSORIES:
         title, qty_col, uom, rate = MECHANISM_ACCESSORIES[
@@ -81,7 +78,6 @@ def generate_df(window_data, finish, installation, af_rate):
             qty = round(window_data[qty_col], 0)
             if qty > 0:
                 data.append([title, qty, uom, rate])
-                total_cost += qty * rate
 
     installation = INSTALLATION_RATE[window_data["installation_method"]]
     if installation:
@@ -91,20 +87,23 @@ def generate_df(window_data, finish, installation, af_rate):
             "ft\u00b2",
             installation
         ])
-        total_cost += area * installation
 
-    return data, total_cost
+    return data
 
 
-def convert(window_wb, finish, installation):
+def convert(window_wb, data, installation):
+
+    finish = data['finish']
 
     window_xl = window_wb.worksheets[0]
     max_row = get_max_row(window_xl)
     vars = update_data(window_xl, max_row)
 
-    path = "files/reference_xls/price_xls"
+    BASE_DIR = Path(__file__).resolve().parents[2]
+    ext = f'aerofoil_{vars["section_type"].lower()}.xlsx'
+    path = BASE_DIR/"files"/"reference_xls"/"price_xls"/ext
     price_wb = openpyxl.load_workbook(
-        f'{path}/aerofoil_{vars["section_type"].lower()}.xlsx', data_only=False
+        path, data_only=False
     )
 
     pitch_row = 7 if vars["section_type"] == "AF400" else 8
@@ -113,6 +112,6 @@ def convert(window_wb, finish, installation):
     price_row = 4 if vars["section_type"] == "AF400" else 5
     cell_ref = get_cell_ref(FINISH_RATE_COLS[finish], price_row)
     rate = evaluate_formula(wb_with_pitch, "Price", cell_ref)
-    data, total_cost = generate_df(vars, finish, installation, rate)
+    data = generate_df(vars, finish, installation, rate)
 
     return data

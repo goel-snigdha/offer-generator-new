@@ -1,6 +1,7 @@
 import math
 import openpyxl
 import streamlit as st
+from pathlib import Path
 from io import BytesIO
 from xlcalculator import ModelCompiler, Evaluator
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
@@ -181,7 +182,9 @@ def color_cells(xl, row_start, row_end, col_start, col_end, color):
 
 def generate_commercial_table(data):
 
-    commercial_wb = openpyxl.load_workbook("files/reference_xls/commercials.xlsx")
+    BASE_DIR = Path(__file__).resolve().parent
+    path = BASE_DIR/"files"/"reference_xls"/"commercials.xlsx"
+    commercial_wb = openpyxl.load_workbook(path)
     commercial_xl = commercial_wb.worksheets[0]
     curr_row = 2
 
@@ -259,7 +262,9 @@ def combine_commercial_xls(wb, dfs):
 
 def combine_xls(dfs):
 
-    wb = openpyxl.load_workbook("files/reference_xls/combined_commercials.xlsx")
+    BASE_DIR = Path(__file__).resolve().parent
+    path = BASE_DIR/"files"/"reference_xls"/"combined_commercials.xlsx"
+    wb = openpyxl.load_workbook(path)
 
     wb = combine_commercial_xls(wb, dfs)
 

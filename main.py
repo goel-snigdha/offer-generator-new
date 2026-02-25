@@ -1,17 +1,33 @@
-import re
 import io
+import re
 import zipfile
 import streamlit as st
-import doc_builder.excel_processor as excel_processor
-from doc_builder.doc_processor import main as generate_offer_doc
+from louvers.main import get_user_input as louvers_input
+from mesh.main import get_user_input as mesh_input
+import excel_processor
+import doc_processor
 
-FINISHES = ["Mill", "Powder Coated - Single Color", "Anodized", "Wood"]
+
+def get_product():
+
+    st.sidebar.success("Select a product:")
+
+    page_names_to_funcs = {
+        "Aluminium Louvers": louvers_input,
+        "SS316 Ropes & Meshes": mesh_input
+    }
+
+    demo_name = st.sidebar.selectbox("Choose a demo", page_names_to_funcs.keys())
+    submit, area_data = page_names_to_funcs[demo_name]()
+
+    return demo_name, submit, area_data
 
 
-def get_user_input():
+def get_general_input():
     all_data = {}
     offer_data = {}
 
+    st.subheader("")
     st.subheader("Project Details")
 
     pattern = r"^VT-\d{4}/[A-G]\d{3}(_R\d{1,2})?$"
@@ -39,45 +55,12 @@ def get_user_input():
 
     all_data["offer_data"] = offer_data
 
-    st.subheader("")
-    st.subheader("Area Spreadsheets")
-
-    all_data["num_areas"] = st.number_input("Line Items:", min_value=1, value=1, step=1)
-    all_data["areas"] = {}
-
-    for item in range(all_data["num_areas"]):
-        line_item = st.expander(f"Line Item {item + 1}", expanded=False)
-        all_data["areas"][item + 1] = []
-
-        with line_item:
-            options = st.number_input(
-                "Options:", min_value=1, value=1, step=1, key=f"opt_{line_item}"
-            )
-            line_items = all_data["areas"][item + 1]
-
-            for opt in range(options):
-                col1, col2 = st.columns([2, 1])
-                with col1:
-                    area_xl = st.file_uploader(
-                        f"Area spreadsheet for Option {opt+1}",
-                        type=["xlsx"],
-                        key=f"area_xl_{item}_{opt}",
-                    )
-                with col2:
-                    finish = st.selectbox(
-                        "Finish", FINISHES, key=f"finish_{item}_{opt}"
-                    )
-                    finish_clean = "Powder Coated" if finish == "Powder Coated - Single Color" else finish
-                line_items.append({"area_table": area_xl, "finish": finish_clean})
-
-    submit = st.button("Submit")
-
-    return submit, all_data
+    return all_data
 
 
-def handle_conversion(data):
-    output_xls, updated_data = excel_processor.convert(data)
-    output_doc = generate_offer_doc(updated_data)
+def handle_conversion(product, data):
+    output_xls, updated_data = excel_processor.convert(product, data)
+    output_doc = doc_processor.main(product, updated_data)
 
     zip_buffer = io.BytesIO()
     with zipfile.ZipFile(zip_buffer, "a", zipfile.ZIP_DEFLATED, False) as zip_file:
@@ -91,9 +74,9 @@ def handle_conversion(data):
     st.session_state["conversion_done"] = True
 
 
-def process(submit, data):
+def process(product, submit, data):
     if submit:
-        handle_conversion(data)
+        handle_conversion(product, data)
         st.rerun()
 
     if "conversion_done" in st.session_state:
@@ -108,9 +91,13 @@ def process(submit, data):
 
 
 def main():
-    st.title("Vibrant Technik Offer Generator")
-    submit, data = get_user_input()
-    process(submit, data)
+
+    st.write("# Welcome to Vibrant Technik! 👋")
+
+    data = get_general_input()
+    product, submit, area_data = get_product()
+    data = data | area_data
+    process(product, submit, data)
 
 
 main()
