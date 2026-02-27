@@ -34,7 +34,7 @@ def get_user_input():
                     finish = st.selectbox(
                         "Finish", FINISHES, key=f"finish_{item}_{opt}"
                     )
-                    finish_clean = "Powder Coated" if finish == "Powder Coated - Single Color" else finish
+                    finish_clean = "Powder Coated \n Single Color" if finish == "Powder Coated - Single Color" else finish
                 line_items.append({"area_table": area_xl, "finish": finish_clean})
 
     submit = st.button("Submit")

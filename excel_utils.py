@@ -7,12 +7,6 @@ from xlcalculator import ModelCompiler, Evaluator
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 
 COLORS = ["F2F2F2", "FFFFFF"]
-FINISH_RATE_COLS = {
-    "Mill": 2,
-    "Powder Coated": 5,
-    "Anodized": 8,
-    "Wood": 8,
-}
 
 
 def number_to_alpha(n):
@@ -101,10 +95,13 @@ def add_merged_cell(xl, row, col_start, col_end, text, bold=False):
 
 def add_total_rows(xl, row_max, col_max):
 
+    ref_cell = xl.cell(row=row_max-1, column=col_max-1)
+
     cell = xl.cell(row=row_max, column=col_max)
     col_ref = f"{chr(64 + col_max)}"
     total_row = row_max
     set_cell(cell, f'=SUM(${col_ref}$2:INDIRECT("{col_ref}" & ROW()-1))')
+    cell.number_format = ref_cell.number_format
     xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total")
 
     row_max += 1
@@ -116,6 +113,7 @@ def add_total_rows(xl, row_max, col_max):
     row_max += 1
     gst_total = xl.cell(row_max, column=col_max)
     set_cell(gst_total, f'=1.18*{col_ref}{total_row}', bold=True)
+    gst_total.number_format = ref_cell.number_format
     xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total Project Value", bold=True)
     xl = add_total_border(xl, row_max, 1, col_max)
 
@@ -233,6 +231,16 @@ def combine_commercial_xls(wb, dfs):
                     set_cell(cell, item[idx], alignment="center")
                 else:
                     set_cell(cell, item[idx])
+
+                thin_black = Side(style="hair", color="000000")
+                all_thin_border = Border(
+                    left=thin_black,
+                    right=thin_black,
+                    top=thin_black,
+                    bottom=thin_black
+                )
+
+                cell.border = all_thin_border
 
             total_cell = xl.cell(row=curr_row, column=6)
             set_cell(total_cell, f"=C{curr_row}*E{curr_row}")

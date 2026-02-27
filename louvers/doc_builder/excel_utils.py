@@ -1,6 +1,6 @@
 FINISH_RATE_COLS = {
     "Mill": 2,
-    "Powder Coated": 5,
+    "Powder Coated \n Single Color": 5,
     "Anodized": 8,
     "Wood": 8,
 }
