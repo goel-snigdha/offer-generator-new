@@ -10,13 +10,6 @@ from .products import (
     rectangular,
     beamc,
 )
-
-FINISH_RATE_COLS = {
-    "Mill": 2,
-    "Powder Coated": 5,
-    "Anodized": 8,
-    "Wood": 8,
-}
 PRODUCT_FUNCTIONS = {
     "Grille": [grille.get_data, grille.convert],
     "Cottal": [cottal.get_data, cottal.convert],
