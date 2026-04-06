@@ -9,6 +9,7 @@ from .products import (
     slouvers,
     rectangular,
     beamc,
+    cnc_sheets
 )
 PRODUCT_FUNCTIONS = {
     "Grille": [grille.get_data, grille.convert],
@@ -18,6 +19,7 @@ PRODUCT_FUNCTIONS = {
     "S-Louvers": [slouvers.get_data, slouvers.convert],
     "Rectangular": [rectangular.get_data, rectangular.convert],
     "Beam C-Channel": [beamc.get_data, beamc.convert],
+    "Aluminium CNC Sheets": [cnc_sheets.get_data, cnc_sheets.convert]
 }
 
 
@@ -32,6 +34,8 @@ def get_area_data(xl):
 
     if xl.cell(row=1, column=1).value.startswith("Beam C-Channel"):
         area_data['product'] = "Beam C-Channel"
+    if xl.cell(row=1, column=1).value.startswith("Aluminium CNC Sheets"):
+        area_data['product'] = "Aluminium CNC Sheets"
 
     area_data['orientation'] = get_orientation(xl)
     get_data_func = PRODUCT_FUNCTIONS.get(area_data["product"], [])[0]

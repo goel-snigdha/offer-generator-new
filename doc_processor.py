@@ -12,9 +12,9 @@ PRODUCT_SECTION_FUNC = {
     "SS316 Ropes & Meshes": mesh_doc.create_product_section
 }
 BASE_DIR = Path(__file__).resolve().parent
-PRODUCT_FOOTER = {
-    "Aluminium Louvers": BASE_DIR/"louvers"/"files"/"offer_templates"/"closing.docx",
-    "SS316 Ropes & Meshes": BASE_DIR/"mesh"/"files"/"offer_templates"/"closing.docx"
+PRODUCT_TEMPLATES = {
+    "Aluminium Louvers": BASE_DIR/"louvers"/"files"/"offer_templates",
+    "SS316 Ropes & Meshes": BASE_DIR/"mesh"/"files"/"offer_templates"
 }
 
 
@@ -40,9 +40,8 @@ def merge_data(template_path, merge_fields):
 
 def main(product, data):
 
-    BASE_DIR = Path(__file__).resolve().parent
-    header_template = BASE_DIR/"files"/"offer_templates"/"cover.docx"
-    footer_template = PRODUCT_FOOTER[product]
+    header_template = PRODUCT_TEMPLATES[product]/"cover.docx"
+    footer_template = PRODUCT_TEMPLATES[product]/"closing.docx"
 
     merge_fields = get_merge_fields(data)
     offer_header = merge_data(header_template, merge_fields)
