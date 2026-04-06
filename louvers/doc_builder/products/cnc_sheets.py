@@ -19,7 +19,7 @@ def update_data(xl, curr_row):
 def generate_df(data, finish, rate):
 
     df = []
-    string = f'Supply of Aluminium CNC Sheets in {finish} Finish'
+    string = f'Supply of Aluminium CNC Sheets in {finish} Finish at 2mm Thickness'
     area = round(data["Area (ft2)"], 0)
 
     df = [
