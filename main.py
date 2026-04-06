@@ -17,7 +17,7 @@ def get_product():
         "SS316 Ropes & Meshes": mesh_input
     }
 
-    demo_name = st.sidebar.selectbox("Choose a demo", page_names_to_funcs.keys())
+    demo_name = st.sidebar.selectbox("Choose a product", page_names_to_funcs.keys())
     submit, area_data = page_names_to_funcs[demo_name]()
 
     return demo_name, submit, area_data
