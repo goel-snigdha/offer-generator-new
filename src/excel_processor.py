@@ -3,15 +3,21 @@ import excel_utils
 
 import louvers.doc_builder.excel_processor as louvers_excel
 import mesh.doc_builder.excel_processor as mesh_excel
+import stretch_ceilings.doc_builder.excel_processor as stretch_excel
 
 GET_AREA_DATA = {
     "Aluminium Louvers": louvers_excel.get_area_data,
     "SS316 Ropes & Meshes": mesh_excel.get_area_data,
+    "Stretch Ceilings": stretch_excel.get_area_data,
 }
 GET_CONVERT_FUNC = {
     "Aluminium Louvers": louvers_excel.product_convert,
     "SS316 Ropes & Meshes": mesh_excel.product_convert,
+    "Stretch Ceilings": stretch_excel.product_convert,
 }
+
+# Products whose get_area_data expects the full workbook instead of a single sheet
+PASS_WORKBOOK = {"Stretch Ceilings"}
 
 
 def convert(product_key, data):
@@ -41,7 +47,9 @@ def convert(product_key, data):
 
             option["line_item_str"] = line_item_str
             option["option_str"] = option_str
-            option_data_from_xl = GET_AREA_DATA[product_key](window_wb.worksheets[0])
+
+            xl_arg = window_wb if product_key in PASS_WORKBOOK else window_wb.worksheets[0]
+            option_data_from_xl = GET_AREA_DATA[product_key](xl_arg)
             option.update(option_data_from_xl)
 
             convert = GET_CONVERT_FUNC[product_key](option)
@@ -59,9 +67,6 @@ def convert(product_key, data):
                 commercial_xl = excel_utils.generate_commercial_table(output_df)
                 output_xls.append((filename, commercial_xl))
                 option["CommercialTable"] = commercial_xl
-
-            else:
-                raise ValueError("This Excel could not be processed.")
 
     if not found_options:
         offer_num = data['offer_data']["OfferNumber"].replace("/", "-")

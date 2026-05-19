@@ -4,6 +4,7 @@ import zipfile
 import streamlit as st
 from louvers.main import get_user_input as louvers_input
 from mesh.main import get_user_input as mesh_input
+from stretch_ceilings.main import get_user_input as stretch_ceilings_input
 import excel_processor
 import doc_processor
 import revise_pricing
@@ -13,7 +14,8 @@ def get_product():
 
     page_names_to_funcs = {
         "Aluminium Louvers": louvers_input,
-        "SS316 Ropes & Meshes": mesh_input
+        "SS316 Ropes & Meshes": mesh_input,
+        "Stretch Ceilings": stretch_ceilings_input,
     }
 
     demo_name = st.sidebar.selectbox("Choose a product:", page_names_to_funcs.keys())
