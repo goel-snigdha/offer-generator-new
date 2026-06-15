@@ -90,12 +90,25 @@ def get_profiles_data(profiles_ws):
     return result
 
 
+def get_lights_data(lights_ws):
+    return {
+        "light_type": lights_ws.cell(row=2, column=1).value,  # A2
+        "box_depth":  lights_ws.cell(row=2, column=4).value,  # D2
+    }
+
+
 def get_area_data(wb):
     areas_ws = wb.worksheets[0]
     profiles_ws = wb.worksheets[1]
 
     data = get_areas_data(areas_ws)
     data.update(get_profiles_data(profiles_ws))
+
+    try:
+        data.update(get_lights_data(wb["Lights BOM"]))
+    except KeyError:
+        pass
+
     data["product"] = "Stretch Ceilings"
     return data
 

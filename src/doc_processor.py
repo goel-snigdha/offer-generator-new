@@ -6,15 +6,19 @@ from doc_utils import get_merge_fields, convert_to_doc
 
 import louvers.doc_builder.doc_processor as louvers_doc
 import mesh.doc_builder.doc_processor as mesh_doc
+import stretch_ceilings.doc_builder.doc_processor as sc_doc
 
 PRODUCT_SECTION_FUNC = {
     "Aluminium Louvers": louvers_doc.create_product_section,
-    "SS316 Ropes & Meshes": mesh_doc.create_product_section
+    "SS316 Ropes & Meshes": mesh_doc.create_product_section,
+    "Stretch Ceilings": sc_doc.create_product_section
+
 }
 BASE_DIR = Path(__file__).resolve().parent
 PRODUCT_TEMPLATES = {
     "Aluminium Louvers": BASE_DIR/"louvers"/"files"/"offer_templates",
-    "SS316 Ropes & Meshes": BASE_DIR/"mesh"/"files"/"offer_templates"
+    "SS316 Ropes & Meshes": BASE_DIR/"mesh"/"files"/"offer_templates",
+    "Stretch Ceilings": BASE_DIR/"stretch_ceilings"/"files"/"offer_templates"
 }
 
 
@@ -46,6 +50,7 @@ def main(product, data):
     merge_fields = get_merge_fields(data)
     offer_header = merge_data(header_template, merge_fields)
     offer_footer = merge_data(footer_template, merge_fields)
+    print(product,'!!!!!!!!')
     master_product_title, section_files = PRODUCT_SECTION_FUNC[product](data)
 
     combined_offer = combine_documents(offer_header, section_files, offer_footer)
