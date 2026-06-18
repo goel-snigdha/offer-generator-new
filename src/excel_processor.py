@@ -16,6 +16,10 @@ GET_CONVERT_FUNC = {
     "Stretch Ceilings": stretch_excel.product_convert,
 }
 
+GET_EXTRA_COMMERCIALS = {
+    "Stretch Ceilings": stretch_excel.get_lights_commercials,
+}
+
 # Products whose get_area_data expects the full workbook instead of a single sheet
 PASS_WORKBOOK = {"Stretch Ceilings"}
 
@@ -73,5 +77,8 @@ def convert(product_key, data):
         combined_xl = (f"Commercials for {offer_num}.xlsx", excel_utils.combine_xls(output_dfs))
         output_xls.append(combined_xl)
         data["CombinedCommercials"] = combined_xl
+
+    if product_key in GET_EXTRA_COMMERCIALS:
+        output_xls.extend(GET_EXTRA_COMMERCIALS[product_key](data))
 
     return output_xls, data

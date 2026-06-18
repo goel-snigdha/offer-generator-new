@@ -113,5 +113,43 @@ def get_area_data(wb):
     return data
 
 
+_PRODUCT_MODULES = {
+    "plain translucent":   "plain_translucent",
+    "printed translucent": "printed_translucent",
+    "mirror":              "mirror",
+    "lacquered":           "lacquered",
+}
+
+
 def product_convert(option):
-    return None
+    import importlib
+    grade = str(option.get("sheet_grade") or "").strip().lower()
+    module_name = next(
+        (mod for key, mod in _PRODUCT_MODULES.items() if key in grade),
+        "plain_translucent",
+    )
+    mod = importlib.import_module(f"stretch_ceilings.doc_builder.products.{module_name}")
+    return mod.convert
+
+
+def get_lights_commercials(data):
+    import openpyxl
+    import excel_utils
+    from stretch_ceilings.doc_builder.products._base import read_lights_bom, generate_lights_df
+
+    results = []
+    for area in data["areas"]:
+        for option in data["areas"][area]:
+            wb_file = option.get("area_table")
+            if wb_file is None:
+                continue
+            if hasattr(wb_file, "seek"):
+                wb_file.seek(0)
+            wb = openpyxl.load_workbook(wb_file, data_only=True)
+            lights_bom = read_lights_bom(wb)
+            if lights_bom:
+                lights_df = generate_lights_df(lights_bom)
+                commercial_xl = excel_utils.generate_commercial_table(lights_df)
+                results.append(("Lights & Drivers Commercials.xlsx", commercial_xl))
+
+    return results
