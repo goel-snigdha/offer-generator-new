@@ -185,27 +185,27 @@ PRODUCT_CATALOG = {
     # LTECH DALI-2 DIMMABLE
     # =========================
     "Ltech SE-36-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 36W Driver",
+        "description": "LTech DALI-2 Dimmable 36W Driver",
         "price": 0,
     },
 
     "Ltech SE-75-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 75W Driver",
+        "description": "LTech DALI-2 Dimmable 75W Driver",
         "price": 0,
     },
 
     "Ltech SE-100-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 100W Driver",
+        "description": "LTech DALI-2 Dimmable 100W Driver",
         "price": 0,
     },
 
     "Ltech SE-150-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 150W Driver",
+        "description": "LTech DALI-2 Dimmable 150W Driver",
         "price": 0,
     },
 
     "Ltech SE-240-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 240W Driver",
+        "description": "LTech DALI-2 Dimmable 240W Driver",
         "price": 0,
     },
 
@@ -231,22 +231,22 @@ PRODUCT_CATALOG = {
     # LTECH DALI-2 TUNABLE
     # =========================
     "Ltech LM-75-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 75W Driver",
+        "description": "LTech DALI-2 Tunable 75W Driver",
         "price": 12544,
     },
 
     "Ltech LM-100-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 100W Driver",
+        "description": "LTech DALI-2 Tunable 100W Driver",
         "price": 13698,
     },
 
     "Ltech LM-150-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 150W Driver",
+        "description": "LTech DALI-2 Tunable 150W Driver",
         "price": 16952,
     },
 
     "Ltech LM-240-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 240W Driver",
+        "description": "LTech DALI-2 Tunable 240W Driver",
         "price": 19317,
     },
 
@@ -254,17 +254,17 @@ PRODUCT_CATALOG = {
     # LTECH YS SERIES
     # =========================
     "Ltech YS-100-24": {
-        "description": "Ltech YS-100-24",
+        "description": "LTech YS-100-24",
         "price": 0,
     },
 
     "Ltech YS-150-24": {
-        "description": "Ltech YS-150-24",
+        "description": "LTech YS-150-24",
         "price": 0,
     },
 
     "Ltech YS-240-24": {
-        "description": "Ltech YS-240-24",
+        "description": "LTech YS-240-24",
         "price": 0,
     },
 
@@ -403,7 +403,7 @@ def generate_lights_df(lights_bom):
         qty  = item["qty"]
         unit = item["unit"] or "nos"
         rate = PRODUCT_CATALOG[item["description"]]["price"]
-        df.append([name.title(), qty, unit, rate])
+        df.append([name, qty, unit, rate])
         if "light" in name.lower():
             total_light_meters += qty
 
