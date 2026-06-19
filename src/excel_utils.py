@@ -93,29 +93,48 @@ def add_merged_cell(xl, row, col_start, col_end, text, bold=False):
     return xl
 
 
-def add_total_rows(xl, row_max, col_max):
+def add_total_rows(xl, row_max, col_max, freight=True, desc_col=1):
 
-    ref_cell = xl.cell(row=row_max-1, column=col_max-1)
+    col_ref = chr(64 + col_max)
+    num_fmt = '[$₹-hi-IN]* #,##,##0'
 
-    cell = xl.cell(row=row_max, column=col_max)
-    col_ref = f"{chr(64 + col_max)}"
+    # Freight row (before Total, so it is included in the Total sum)
+    if freight:
+        freight_label = xl.cell(row=row_max, column=desc_col)
+        set_cell(freight_label, "Freight Charges", alignment="left")
+        merge_cells(xl, row_max, row_max, desc_col + 1, col_max - 1)
+        set_cell(xl.cell(row=row_max, column=desc_col + 1), "Lump Sum")
+        freight_cell = xl.cell(row=row_max, column=col_max)
+        set_cell(freight_cell, 6000)
+        freight_cell.number_format = num_fmt
+        xl.row_dimensions[row_max].height = 30
+        row_max += 1
+
+    # Total row
     total_row = row_max
-    set_cell(cell, f'=SUM(${col_ref}$2:INDIRECT("{col_ref}" & ROW()-1))')
-    cell.number_format = ref_cell.number_format
-    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total")
+    total_cell = xl.cell(row=row_max, column=col_max)
+    set_cell(total_cell, f'=SUM(${col_ref}$2:${col_ref}${total_row - 1})', bold=True)
+    total_cell.number_format = num_fmt
+    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total", bold=True)
+    xl.row_dimensions[row_max].height = 30
 
+    # GST row
     row_max += 1
+    gst_row = row_max
     gst_cell = xl.cell(row=row_max, column=col_max)
-    set_cell(gst_cell, "+ 18% GST", alignment="right")
-    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "")
-    gst_cell.parent.row_dimensions[gst_cell.row].height = 30
+    set_cell(gst_cell, f'=CEILING({col_ref}{total_row}*0.18,1)')
+    gst_cell.number_format = num_fmt
+    xl = add_merged_cell(xl, row_max, 1, col_max - 1, "+ GST @18%")
+    xl.row_dimensions[row_max].height = 30
 
+    # Total Project Value row
     row_max += 1
-    gst_total = xl.cell(row_max, column=col_max)
-    set_cell(gst_total, f'=1.18*{col_ref}{total_row}', bold=True)
-    gst_total.number_format = ref_cell.number_format
+    tpv_cell = xl.cell(row=row_max, column=col_max)
+    set_cell(tpv_cell, f'={col_ref}{total_row}+{col_ref}{gst_row}', bold=True)
+    tpv_cell.number_format = num_fmt
     xl = add_merged_cell(xl, row_max, 1, col_max - 1, "Total Project Value", bold=True)
     xl = add_total_border(xl, row_max, 1, col_max)
+    xl.row_dimensions[row_max].height = 30
 
     return xl, row_max
 
@@ -178,7 +197,7 @@ def color_cells(xl, row_start, row_end, col_start, col_end, color):
             cell.fill = fill
 
 
-def generate_commercial_table(data):
+def generate_commercial_table(data, freight=True):
 
     BASE_DIR = Path(__file__).resolve().parent
     path = BASE_DIR/"files"/"reference_xls"/"commercials.xlsx"
@@ -195,12 +214,16 @@ def generate_commercial_table(data):
                 set_cell(cell, data[i][idx])
             adjust_cell(cell)
 
+        commercial_xl.row_dimensions[curr_row].height = 30
+        commercial_xl.cell(row=curr_row, column=4).number_format = '[$₹-hi-IN]* #,##,##0'
+
         total_cell = commercial_xl.cell(row=curr_row, column=5)
         set_cell(total_cell, f"=B{curr_row}*D{curr_row}")
+        total_cell.number_format = '[$₹-hi-IN]* #,##,##0'
 
         curr_row += 1
 
-    commercial_xl, curr_row = add_total_rows(commercial_xl, curr_row, 5)
+    commercial_xl, curr_row = add_total_rows(commercial_xl, curr_row, 5, freight=freight)
 
     commercial_xl.delete_rows(curr_row+1, commercial_xl.max_row)
 
@@ -226,7 +249,10 @@ def combine_commercial_xls(wb, dfs):
                     set_cell(cell, item[idx], alignment="left")
                     adjust_cell(cell)
                 elif idx == 1:
-                    set_cell(cell, round(item[idx], 0))
+                    try:
+                        set_cell(cell, round(float(item[idx]), 0))
+                    except (TypeError, ValueError):
+                        set_cell(cell, item[idx])
                 elif idx == 2:
                     set_cell(cell, item[idx], alignment="center")
                 else:
@@ -261,7 +287,7 @@ def combine_commercial_xls(wb, dfs):
 
         start = curr_row + 1
 
-    xl, start = add_total_rows(xl, start, 7)
+    xl, start = add_total_rows(xl, start, 7, desc_col=2)
 
     xl.delete_rows(start+1, xl.max_row)
 
@@ -281,3 +307,6 @@ def combine_xls(dfs):
     output.seek(0)
 
     return output
+
+
+# 

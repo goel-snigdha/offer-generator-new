@@ -1,87 +1,48 @@
 AREA_UNITS = {"ft²", "ft2", "sqft", "sq ft", "m²", "m2", "sqm", "sq m"}
 
-# LIGHTS_RATES = {
-#     "PHILIPS SINGLE COLOUR 12V 5.6W LED LIGHTS":      1,
-#     "PHILIPS SINGLE COLOUR 12V 10W LED LIGHTS":        1,
-#     "PHILIPS SINGLE COLOUR 12V 11W LED LIGHTS":        1,
-#     "OSRAM SINGLE COLOUR 24V 10W LED LIGHTS":          1,
-#     "TUNABLE WHITE 12V 10W LED LIGHTS":                1,
-#     "TUNABLE WHITE 24V 10W LED LIGHTS":                1,
-#     "MEANWELL ON/OFF 12V 150W DRIVER":                 1680,
-#     "MEANWELL ON/OFF 12V 200W DRIVER":                 2304,
-#     "MEANWELL ON/OFF 12V 350W DRIVER":                 2800,
-#     "MEANWELL ON/OFF 12V 450W DRIVER":                 4768,
-#     "MEANWELL ON/OFF 12V 600W DRIVER":                 5520,
-#     "OSRAM ON/OFF 24V 120W DRIVER":                    1680,
-#     "OSRAM ON/OFF 24V 180W DRIVER":                    2660,
-#     "MEANWELL ANALOGUE DIMMABLE 12V 75W DRIVER":       3600,
-#     "MEANWELL ANALOGUE DIMMABLE 12V 150W DRIVER":      4240,
-#     "MEANWELL ANALOGUE DIMMABLE 12V 200W DRIVER":      5200,
-#     "OSRAM ANALOGUE DIMMABLE 24V 100W DRIVER":         4417,
-#     "OSRAM ANALOGUE DIMMABLE 24V 130W DRIVER":         5068,
-#     "LTECH DALI2 DIMMABLE 12V 36W DRIVER":             6307,
-#     "LTECH DALI2 DIMMABLE 12V 75W DRIVER":             11663,
-#     "LTECH DALI2 DIMMABLE 12V 150W DRIVER":            16207,
-#     "LTECH DALI2 DIMMABLE 24V 36W DRIVER":             6307,
-#     "LTECH DALI2 DIMMABLE 24V 75W DRIVER":             11257,
-#     "LTECH DALI2 DIMMABLE 24V 100W DRIVER":            12613,
-#     "LTECH DALI2 DIMMABLE 24V 150W DRIVER":            15530,
-#     "LTECH DALI2 DIMMABLE 24V 240W DRIVER":            17985,
-#     "OSRAM DALI2 DIMMABLE 24V 50W DRIVER":             4760,
-#     "OSRAM DALI2 DIMMABLE 24V 80W DRIVER":             5180,
-#     "OSRAM DALI2 DIMMABLE 24V 160W DRIVER":            7140,
-#     "LTECH DALI2 TUNABLE 12V 75W DRIVER":              12544,
-#     "LTECH DALI2 TUNABLE 12V 150W DRIVER":             16952,
-#     "LTECH DALI2 TUNABLE 24V 75W DRIVER":              12544,
-#     "LTECH DALI2 TUNABLE 24V 100W DRIVER":             13698,
-#     "LTECH DALI2 TUNABLE 24V 150W DRIVER":             16952,
-#     "OSRAM DALI2 TUNABLE 24V 160W DRIVER":             6600,
-#     "MEANWELL CASAMBI TUNABLE 12V 200W DRIVER":        2304,
-#     "CASAMBI BLUETOOTH DRIVER":                        8950,
-#     "CONTROLLER":                                      25000,
-# }
+
 
 PRODUCT_CATALOG = {
     # =========================
     # LIGHTS
     # =========================
     "Philips Proglow Nxt 55 Watt Led Strip Light 264 LEDs": {
-        "description": "Philips Single Colour 12V 11W LED Lights",
+        "description": "Philips Single Colour 11W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BF1200S-G4-930-24-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BF1200S-G4-940-24-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BF1200S-G4-965-24-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BFP1200S-G3-830-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BFP1200S-G3-840-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Professional Single-Colour LED Strip (BFP1200S-G3-865-05)": {
-        "description": "Osram Single Colour 24V 12W LED Lights",
+        "description": "Osram Single Colour 12W LED Lights",
         "price": 0,
     },
 
     "Osram Tunable Dynamic White CCT Strip (BF1000STW-G4-927)": {
-        "description": "Tunable White 24V 10W LED Lights",
+        "description": "Tunable White 10W LED Lights",
         "price": 0,
     },
 
@@ -89,27 +50,27 @@ PRODUCT_CATALOG = {
     # MEAN WELL ON/OFF
     # =========================
     "Mean Well LRS-150-12": {
-        "description": "Meanwell On/Off 12V 150W Driver",
+        "description": "Meanwell On/Off 150W Driver",
         "price": 1680,
     },
 
     "Mean Well LRS-200-12": {
-        "description": "Meanwell On/Off 12V 200W Driver",
+        "description": "Meanwell On/Off 200W Driver",
         "price": 2304,
     },
 
     "Mean Well LRS-350-12": {
-        "description": "Meanwell On/Off 12V 350W Driver",
+        "description": "Meanwell On/Off 350W Driver",
         "price": 2800,
     },
 
     "Mean Well LRS-450-12": {
-        "description": "Meanwell On/Off 12V 450W Driver",
+        "description": "Meanwell On/Off 450W Driver",
         "price": 4768,
     },
 
     "Mean Well SE-600-12": {
-        "description": "Meanwell On/Off 12V 600W Driver",
+        "description": "Meanwell On/Off 600W Driver",
         "price": 5520,
     },
 
@@ -162,17 +123,17 @@ PRODUCT_CATALOG = {
     # MEAN WELL ANALOGUE
     # =========================
     "Mean Well ELG-75-12D": {
-        "description": "Meanwell Analogue Dimmable 12V 75W Driver",
+        "description": "Meanwell Analogue Dimmable 75W Driver",
         "price": 3600,
     },
 
     "Mean Well ELG-150-12D": {
-        "description": "Meanwell Analogue Dimmable 12V 150W Driver",
+        "description": "Meanwell Analogue Dimmable 150W Driver",
         "price": 4240,
     },
 
     "Mean Well ELG-200-12D": {
-        "description": "Meanwell Analogue Dimmable 12V 200W Driver",
+        "description": "Meanwell Analogue Dimmable 200W Driver",
         "price": 5200,
     },
 
@@ -180,12 +141,12 @@ PRODUCT_CATALOG = {
     # OSRAM ON/OFF
     # =========================
     "Osram OT Fit 120/24 V C CV": {
-        "description": "Osram On/Off 24V 120W Driver",
+        "description": "Osram On/Off 120W Driver",
         "price": 1680,
     },
 
     "Osram OT Fit 180/24 V C CV": {
-        "description": "Osram On/Off 24V 180W Driver",
+        "description": "Osram On/Off 180W Driver",
         "price": 2660,
     },
 
@@ -193,12 +154,12 @@ PRODUCT_CATALOG = {
     # OSRAM ANALOGUE
     # =========================
     "Osram OT FLUID 100/24 D CV": {
-        "description": "Osram Analogue Dimmable 24V 100W Driver",
+        "description": "Osram Analogue Dimmable 100W Driver",
         "price": 4417,
     },
 
     "Osram OT FLUID 130/24 D CV": {
-        "description": "Osram Analogue Dimmable 24V 130W Driver",
+        "description": "Osram Analogue Dimmable 130W Driver",
         "price": 5068,
     },
 
@@ -206,17 +167,17 @@ PRODUCT_CATALOG = {
     # OSRAM DALI-2 DIMMABLE
     # =========================
     "Osram OTi DALI 50/220-240/24 1-4 CH": {
-        "description": "Osram DALI-2 Dimmable 24V 50W Driver",
+        "description": "Osram DALI-2 Dimmable 50W Driver",
         "price": 4760,
     },
 
     "Osram OTi DALI 80/220-240/24 1-4 CH": {
-        "description": "Osram DALI-2 Dimmable 24V 80W Driver",
+        "description": "Osram DALI-2 Dimmable 80W Driver",
         "price": 5180,
     },
 
     "Osram OTi DALI 160/220-240/24 1-4 CH": {
-        "description": "Osram DALI-2 Dimmable 24V 160W Driver",
+        "description": "Osram DALI-2 Dimmable 160W Driver",
         "price": 7140,
     },
 
@@ -224,27 +185,27 @@ PRODUCT_CATALOG = {
     # LTECH DALI-2 DIMMABLE
     # =========================
     "Ltech SE-36-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 24V 36W Driver",
+        "description": "Ltech DALI-2 Dimmable 36W Driver",
         "price": 0,
     },
 
     "Ltech SE-75-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 24V 75W Driver",
+        "description": "Ltech DALI-2 Dimmable 75W Driver",
         "price": 0,
     },
 
     "Ltech SE-100-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 24V 100W Driver",
+        "description": "Ltech DALI-2 Dimmable 100W Driver",
         "price": 0,
     },
 
     "Ltech SE-150-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 24V 150W Driver",
+        "description": "Ltech DALI-2 Dimmable 150W Driver",
         "price": 0,
     },
 
     "Ltech SE-240-24-D1M1": {
-        "description": "Ltech DALI-2 Dimmable 24V 240W Driver",
+        "description": "Ltech DALI-2 Dimmable 240W Driver",
         "price": 0,
     },
 
@@ -270,22 +231,22 @@ PRODUCT_CATALOG = {
     # LTECH DALI-2 TUNABLE
     # =========================
     "Ltech LM-75-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 24V 75W Driver",
+        "description": "Ltech DALI-2 Tunable 75W Driver",
         "price": 12544,
     },
 
     "Ltech LM-100-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 24V 100W Driver",
+        "description": "Ltech DALI-2 Tunable 100W Driver",
         "price": 13698,
     },
 
     "Ltech LM-150-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 24V 150W Driver",
+        "description": "Ltech DALI-2 Tunable 150W Driver",
         "price": 16952,
     },
 
     "Ltech LM-240-24-G2D2": {
-        "description": "Ltech DALI-2 Tunable 24V 240W Driver",
+        "description": "Ltech DALI-2 Tunable 240W Driver",
         "price": 19317,
     },
 
@@ -436,10 +397,17 @@ def read_lights_bom(wb):
 
 def generate_lights_df(lights_bom):
     df = []
+    total_light_meters = 0
     for item in lights_bom:
         name = PRODUCT_CATALOG[item["description"]]["description"]
         qty  = item["qty"]
         unit = item["unit"] or "nos"
         rate = PRODUCT_CATALOG[item["description"]]["price"]
         df.append([name.title(), qty, unit, rate])
+        if "light" in name.lower():
+            total_light_meters += qty
+
+    if total_light_meters:
+        df.append(["Installation Charges", total_light_meters, "m", 150])
+
     return df

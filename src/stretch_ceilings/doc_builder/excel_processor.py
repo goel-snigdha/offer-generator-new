@@ -149,7 +149,7 @@ def get_lights_commercials(data):
             lights_bom = read_lights_bom(wb)
             if lights_bom:
                 lights_df = generate_lights_df(lights_bom)
-                commercial_xl = excel_utils.generate_commercial_table(lights_df)
+                commercial_xl = excel_utils.generate_commercial_table(lights_df, freight=False)
                 results.append(("Lights & Drivers Commercials.xlsx", commercial_xl))
 
     return results
