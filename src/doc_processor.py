@@ -51,18 +51,17 @@ def main(product, data):
     merge_fields = get_merge_fields(data)
     offer_header = merge_data(header_template, merge_fields)
     offer_footer = merge_data(footer_template, merge_fields)
-    master_product_title, section_files = PRODUCT_SECTION_FUNC[product](data)
+    _, section_files = PRODUCT_SECTION_FUNC[product](data)
 
     total_pv_path = PRODUCT_TEMPLATES[product] / "total_project_value.docx"
     if total_pv_path.exists():
         section_files.append(merge_data(total_pv_path, {"OfferNumber": offer_data["OfferNumber"]}))
 
     combined_offer = combine_documents(offer_header, section_files, offer_footer)
-    filename = "{}_Offer for Supply {}of {} for {}.docx".format(
+    filename = "Proposal for {}, {} - {}.docx".format(
+        offer_data["ProjectName"],
+        offer_data["ProjectCity"],
         offer_data["OfferNumber"].replace("/", " ").replace("-", ""),
-        "and Installation " if offer_data["installation"] else "",
-        master_product_title,
-        offer_data["FullName"],
     )
 
     output = BytesIO()
