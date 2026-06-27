@@ -31,6 +31,35 @@ def _merge_section(template_path, fields=None):
     return convert_to_doc(doc)
 
 
+def _has_lights(option_data):
+    """True only if the option's uploaded sheet has a non-empty Lights BOM.
+    An empty Lights BOM means lights aren't part of this offer, so the lights
+    product page should be skipped (mirrors get_lights_commercials)."""
+    import openpyxl
+    from stretch_ceilings.doc_builder.products._base import read_lights_bom
+
+    wb_file = option_data.get("area_table")
+    if wb_file is None:
+        return False
+    try:
+        if hasattr(wb_file, "seek"):
+            wb_file.seek(0)
+        wb = openpyxl.load_workbook(wb_file, data_only=True)
+        return bool(read_lights_bom(wb))
+    except Exception:
+        return False
+
+
+def offer_has_lights(data):
+    """True if any option across the offer includes lights (translucent sheet with a
+    non-empty Lights BOM) — i.e. a lights page is actually part of this offer."""
+    for line_item in data["areas"]:
+        for option_data in data["areas"][line_item]:
+            if _is_translucent(option_data.get("sheet_grade", "")) and _has_lights(option_data):
+                return True
+    return False
+
+
 def create_product_section(data):
 
     areas      = data["areas"]
@@ -67,8 +96,8 @@ def create_product_section(data):
                 })
             )
 
-            # 4. Lights page (translucent only)
-            if _is_translucent(sheet_grade):
+            # 4. Lights page (translucent sheets that actually include lights)
+            if _is_translucent(sheet_grade) and _has_lights(option_data):
                 section_files.append(
                     _merge_section(_PROD_TEMPLATES / "lights.docx", {
                         "LightType": str(option_data.get("light_type") or ""),

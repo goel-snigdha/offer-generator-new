@@ -22,6 +22,19 @@ PRODUCT_TEMPLATES = {
 }
 
 
+def _resolve_closing_template(product, data):
+    """Pick the closing template. Stretch Ceilings uses a lights-specific closing when
+    the offer includes lights; falls back to the generic closing.docx if a specific
+    file isn't present."""
+    base = PRODUCT_TEMPLATES[product]
+    if product == "Stretch Ceilings":
+        name = "closing_with_lights.docx" if sc_doc.offer_has_lights(data) else "closing_without_lights.docx"
+        candidate = base / name
+        if candidate.exists():
+            return candidate
+    return base / "closing.docx"
+
+
 def combine_documents(header, section_files, footer):
 
     composer = Composer(header)
@@ -45,7 +58,7 @@ def merge_data(template_path, merge_fields):
 def main(product, data):
 
     header_template = PRODUCT_TEMPLATES[product]/"cover.docx"
-    footer_template = PRODUCT_TEMPLATES[product]/"closing.docx"
+    footer_template = _resolve_closing_template(product, data)
 
     offer_data = data['offer_data']
     merge_fields = get_merge_fields(data)
