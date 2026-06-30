@@ -72,11 +72,11 @@ def generate_df(data):
             [
                 string.format(str(round(float(beam[0]) / 25.4))),
                 length,
-                "m",
+                "ft",
                 beam_rate_formula,
             ]
         )
-        df.append(["Installation Charges", length, "m", INSTALLATION_COST])
+        df.append(["Installation Charges", length, "ft", INSTALLATION_COST])
 
     return df
 
