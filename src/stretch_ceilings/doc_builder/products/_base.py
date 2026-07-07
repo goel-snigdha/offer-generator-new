@@ -4,6 +4,14 @@ AREA_UNITS = {"ft²", "ft2", "sqft", "sq ft", "m²", "m2", "sqm", "sq m"}
 
 PRODUCT_CATALOG = {
     # =========================
+    # CONTROLS / DIMMERS
+    # =========================
+    "Analog 1-10V Master Rotary Wall Dimmer": {
+        "description": "Analog 1-10V Master Rotary Wall Dimmer",
+        "price": 0,
+    },
+
+    # =========================
     # LIGHTS
     # =========================
     "Philips Proglow Nxt 55 Watt Led Strip Light 264 LEDs": {
@@ -399,10 +407,16 @@ def generate_lights_df(lights_bom):
     df = []
     total_light_meters = 0
     for item in lights_bom:
-        name = PRODUCT_CATALOG[item["description"]]["description"]
+        # Items not in the catalog are still listed on the commercials, without a price.
+        entry = PRODUCT_CATALOG.get(item["description"])
+        if entry is not None:
+            name = entry["description"]
+            rate = entry["price"]
+        else:
+            name = item["description"]
+            rate = 0
         qty  = item["qty"]
         unit = item["unit"] or "nos"
-        rate = PRODUCT_CATALOG[item["description"]]["price"]
         df.append([name, qty, unit, rate])
         if "light" in name.lower():
             total_light_meters += qty
